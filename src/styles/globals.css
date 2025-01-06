@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* כיוון ברירת מחדל */
+  direction: rtl;
+}
+
+/* כיווני טקסט */
+.text-rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.text-ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+/* ביטויים מתמטיים */
+.math-expression {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-family: monospace;
+}
+
+/* מספרים */
+.number {
+  direction: ltr;
+  unicode-bidi: bidi-override;
+}
+
+/* אופטימיזציה */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* מניעת בחירת טקסט באנימציות */
+.no-select {
+  user-select: none;
+}
+
+/* טופס שמאלי */
+.ltr-form input[type="text"],
+.ltr-form input[type="number"] {
+  direction: ltr;
+  text-align: left;
+}
+
+/* הגדרות ביצועים */
+@layer utilities {
+  .transform-gpu {
+    transform: translate3d(0, 0, 0);
+  }
+  
+  .will-change-transform {
+    will-change: transform;
+  }
+}
