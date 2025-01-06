@@ -1,4 +1,3 @@
-// src/components/game/farm/FarmArea.tsx
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Task } from '../../../types/tasks';
@@ -73,7 +72,7 @@ const FarmArea: React.FC<FarmAreaProps> = ({
         >
           <AnimatePresence>
             {activeTasks[animal.id] && (
-                              <motion.div
+              <motion.div
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0, opacity: 0 }}
