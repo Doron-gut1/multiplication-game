@@ -1,11 +1,14 @@
 import './App.css';
+import { GameProvider } from './context/GameContext';
 import GameManager from './components/game/GameManager';
 
 function App() {
   return (
-    <div className="app">
-      <GameManager />
-    </div>
+    <GameProvider>
+      <div className="app">
+        <GameManager />
+      </div>
+    </GameProvider>
   );
 }
 
