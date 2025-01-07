@@ -4,64 +4,49 @@ import { User, UserService } from '../services/UserService';
 
 interface UserContextType {
   user: User | null;
-  login: (username: string) => Promise<void>;
-  logout: () => Promise<void>;
-  isLoading: boolean;
+  setUser: (user: User | null) => void;
+  updateUser: (updates: Partial<User>) => void;
+  logout: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // בדיקת משתמש מחובר בטעינת האפליקציה
-    const checkCurrentUser = async () => {
-      try {
-        const currentUser = await UserService.getCurrentUser();
-        setUser(currentUser);
-      } catch (error) {
-        console.error('Error checking current user:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkCurrentUser();
+    // Load user data from localStorage on mount
+    const savedUser = UserService.getUser();
+    if (savedUser) {
+      setUser(savedUser);
+    }
   }, []);
 
-  const login = async (username: string) => {
-    setIsLoading(true);
-    try {
-      const loggedInUser = await UserService.login(username);
-      setUser(loggedInUser);
-    } finally {
-      setIsLoading(false);
+  const updateUser = (updates: Partial<User>) => {
+    if (user) {
+      const updatedUser = UserService.updateUser(updates);
+      if (updatedUser) {
+        setUser(updatedUser);
+      }
     }
   };
 
-  const logout = async () => {
-    setIsLoading(true);
-    try {
-      await UserService.logout();
-      setUser(null);
-    } finally {
-      setIsLoading(false);
-    }
+  const logout = () => {
+    UserService.clearUser();
+    setUser(null);
   };
 
   return (
-    <UserContext.Provider value={{ user, login, logout, isLoading }}>
+    <UserContext.Provider value={{ user, setUser, updateUser, logout }}>
       {children}
     </UserContext.Provider>
   );
-};
+}
 
-export const useUser = () => {
+export function useUser() {
   const context = useContext(UserContext);
   if (context === undefined) {
     throw new Error('useUser must be used within a UserProvider');
   }
   return context;
-};
+}
