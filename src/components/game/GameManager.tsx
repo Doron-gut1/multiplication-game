@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { GameZone } from './';
 import LearningZone from '../learning/LearningZone';
 
 type GameState = 'learning' | 'playing' | 'progress';
@@ -52,7 +51,11 @@ const GameManager: React.FC = () => {
 
       <div className="border rounded-lg p-4">
         {currentState === 'learning' && <LearningZone />}
-        {currentState === 'playing' && <div>GameZone will be added soon</div>}
+        {currentState === 'playing' && (
+          <div className="bg-white rounded-lg p-6 text-center text-gray-600">
+            אזור המשחק יפותח בקרוב
+          </div>
+        )}
         {currentState === 'progress' && (
           <div className="bg-white rounded-lg p-6 text-center text-gray-600">
             אזור ההתקדמות יפותח בקרוב
